@@ -2,11 +2,11 @@
  * synergy -- mouse and keyboard sharing utility
  * Copyright (C) 2012-2016 Symless Ltd.
  * Copyright (C) 2002 Chris Schoeneman
- * 
+ *
  * This package is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * found in the file LICENSE that should have accompanied this file.
- * 
+ *
  * This package is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -25,53 +25,45 @@
 // XSocketAddress
 //
 
-XSocketAddress::XSocketAddress(EError error,
-                String  hostname, int port) noexcept :
-    m_error(error),
-    m_hostname(std::move(hostname)),
-    m_port(port)
-{
+XSocketAddress::XSocketAddress (EError error, String hostname,
+                                int port) noexcept
+    : m_error (error), m_hostname (std::move (hostname)), m_port (port) {
     // do nothing
 }
 
 XSocketAddress::EError
-XSocketAddress::getError() const noexcept
-{
+XSocketAddress::getError () const noexcept {
     return m_error;
 }
 
 String
-XSocketAddress::getHostname() const noexcept
-{
+XSocketAddress::getHostname () const noexcept {
     return m_hostname;
 }
 
 int
-XSocketAddress::getPort() const noexcept
-{
+XSocketAddress::getPort () const noexcept {
     return m_port;
 }
 
 String
-XSocketAddress::getWhat() const noexcept
-{
-    static const char* s_errorID[] = {
-        "XSocketAddressUnknown",
-        "XSocketAddressNotFound",
-        "XSocketAddressNoAddress",
-        "XSocketAddressUnsupported",
-        "XSocketAddressBadPort"
-    };
+XSocketAddress::getWhat () const noexcept {
+    static const char* s_errorID[]  = {"XSocketAddressUnknown",
+                                      "XSocketAddressNotFound",
+                                      "XSocketAddressNoAddress",
+                                      "XSocketAddressUnsupported",
+                                      "XSocketAddressBadPort"};
     static const char* s_errorMsg[] = {
         "unknown error for: %{1}:%{2}",
         "address not found for: %{1}",
         "no address for: %{1}",
         "unsupported address for: %{1}",
-        "invalid port"                // m_port may not be set to the bad port
+        "invalid port" // m_port may not be set to the bad port
     };
-    return format(s_errorID[m_error], s_errorMsg[m_error],
-                                m_hostname.c_str(), 
-                                synergy::string::sprintf("%d", m_port).c_str());
+    return format (s_errorID[m_error],
+                   s_errorMsg[m_error],
+                   m_hostname.c_str (),
+                   synergy::string::sprintf ("%d", m_port).c_str ());
 }
 
 
@@ -80,9 +72,8 @@ XSocketAddress::getWhat() const noexcept
 //
 
 String
-XSocketIOClose::getWhat() const noexcept
-{
-    return format("XSocketIOClose", "close: %{1}", what());
+XSocketIOClose::getWhat () const noexcept {
+    return format ("XSocketIOClose", "close: %{1}", what ());
 }
 
 
@@ -91,9 +82,8 @@ XSocketIOClose::getWhat() const noexcept
 //
 
 String
-XSocketBind::getWhat() const noexcept
-{
-    return format("XSocketBind", "cannot bind address: %{1}", what());
+XSocketBind::getWhat () const noexcept {
+    return format ("XSocketBind", "cannot bind address: %{1}", what ());
 }
 
 
@@ -102,9 +92,8 @@ XSocketBind::getWhat() const noexcept
 //
 
 String
-XSocketConnect::getWhat() const noexcept
-{
-    return format("XSocketConnect", "cannot connect socket: %{1}", what());
+XSocketConnect::getWhat () const noexcept {
+    return format ("XSocketConnect", "cannot connect socket: %{1}", what ());
 }
 
 
@@ -113,7 +102,6 @@ XSocketConnect::getWhat() const noexcept
 //
 
 String
-XSocketCreate::getWhat() const noexcept
-{
-    return format("XSocketCreate", "cannot create socket: %{1}", what());
+XSocketCreate::getWhat () const noexcept {
+    return format ("XSocketCreate", "cannot create socket: %{1}", what ());
 }

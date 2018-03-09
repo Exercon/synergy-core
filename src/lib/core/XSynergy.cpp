@@ -2,11 +2,11 @@
  * synergy -- mouse and keyboard sharing utility
  * Copyright (C) 2012-2016 Symless Ltd.
  * Copyright (C) 2002 Chris Schoeneman
- * 
+ *
  * This package is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * found in the file LICENSE that should have accompanied this file.
- * 
+ *
  * This package is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -26,8 +26,7 @@
 //
 
 String
-XBadClient::getWhat() const noexcept
-{
+XBadClient::getWhat () const noexcept {
     return "XBadClient";
 }
 
@@ -36,31 +35,27 @@ XBadClient::getWhat() const noexcept
 // XIncompatibleClient
 //
 
-XIncompatibleClient::XIncompatibleClient(int major, int minor) :
-    m_major(major),
-    m_minor(minor)
-{
+XIncompatibleClient::XIncompatibleClient (int major, int minor)
+    : m_major (major), m_minor (minor) {
     // do nothing
 }
 
 int
-XIncompatibleClient::getMajor() const noexcept
-{
+XIncompatibleClient::getMajor () const noexcept {
     return m_major;
 }
 
 int
-XIncompatibleClient::getMinor() const noexcept
-{
+XIncompatibleClient::getMinor () const noexcept {
     return m_minor;
 }
 
 String
-XIncompatibleClient::getWhat() const noexcept
-{
-    return format("XIncompatibleClient", "incompatible client %{1}.%{2}",
-                                synergy::string::sprintf("%d", m_major).c_str(),
-                                synergy::string::sprintf("%d", m_minor).c_str());
+XIncompatibleClient::getWhat () const noexcept {
+    return format ("XIncompatibleClient",
+                   "incompatible client %{1}.%{2}",
+                   synergy::string::sprintf ("%d", m_major).c_str (),
+                   synergy::string::sprintf ("%d", m_minor).c_str ());
 }
 
 
@@ -68,22 +63,19 @@ XIncompatibleClient::getWhat() const noexcept
 // XDuplicateClient
 //
 
-XDuplicateClient::XDuplicateClient(String  name) :
-    m_name(std::move(name))
-{
+XDuplicateClient::XDuplicateClient (String name) : m_name (std::move (name)) {
     // do nothing
 }
 
 const String&
-XDuplicateClient::getName() const noexcept
-{
+XDuplicateClient::getName () const noexcept {
     return m_name;
 }
 
 String
-XDuplicateClient::getWhat() const noexcept
-{
-    return format("XDuplicateClient", "duplicate client %{1}", m_name.c_str());
+XDuplicateClient::getWhat () const noexcept {
+    return format (
+        "XDuplicateClient", "duplicate client %{1}", m_name.c_str ());
 }
 
 
@@ -91,22 +83,18 @@ XDuplicateClient::getWhat() const noexcept
 // XUnknownClient
 //
 
-XUnknownClient::XUnknownClient(String  name) :
-    m_name(std::move(name))
-{
+XUnknownClient::XUnknownClient (String name) : m_name (std::move (name)) {
     // do nothing
 }
 
 const String&
-XUnknownClient::getName() const noexcept
-{
+XUnknownClient::getName () const noexcept {
     return m_name;
 }
 
 String
-XUnknownClient::getWhat() const noexcept
-{
-    return format("XUnknownClient", "unknown client %{1}", m_name.c_str());
+XUnknownClient::getWhat () const noexcept {
+    return format ("XUnknownClient", "unknown client %{1}", m_name.c_str ());
 }
 
 
@@ -114,22 +102,18 @@ XUnknownClient::getWhat() const noexcept
 // XExitApp
 //
 
-XExitApp::XExitApp(int code) :
-    m_code(code)
-{
+XExitApp::XExitApp (int code) : m_code (code) {
     // do nothing
 }
 
 int
-XExitApp::getCode() const noexcept
-{
+XExitApp::getCode () const noexcept {
     return m_code;
 }
 
 String
-XExitApp::getWhat() const noexcept
-{
-    return format(
-        "XExitApp", "exiting with code %{1}", 
-        synergy::string::sprintf("%d", m_code).c_str());
+XExitApp::getWhat () const noexcept {
+    return format ("XExitApp",
+                   "exiting with code %{1}",
+                   synergy::string::sprintf ("%d", m_code).c_str ());
 }

@@ -22,13 +22,11 @@
 //! IOHID event on Mac
 class OSXIOHID {
 public:
-    void                postModifierKeys(UInt32 mask);
-    void                postKey(const UInt8 virtualKeyCode,
-                                const bool down);
-    void                fakeMouseButton(UInt32 button, bool press);
+    void postModifierKeys (UInt32 mask);
+    void postKey (const UInt8 virtualKeyCode, const bool down);
+    void fakeMouseButton (UInt32 button, bool press);
 
 private:
-    void                postMouseEvent(io_connect_t event, UInt32 type,
-                                NXEventData* ev, IOOptionBits flags,
-                                IOOptionBits options);
+    void postMouseEvent (io_connect_t event, UInt32 type, NXEventData* ev,
+                         IOOptionBits flags, IOOptionBits options);
 };

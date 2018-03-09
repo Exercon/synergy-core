@@ -2,11 +2,11 @@
  * synergy -- mouse and keyboard sharing utility
  * Copyright (C) 2012-2016 Symless Ltd.
  * Copyright (C) 2004 Chris Schoeneman
- * 
+ *
  * This package is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * found in the file LICENSE that should have accompanied this file.
- * 
+ *
  * This package is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -26,8 +26,7 @@
 // IKeyState
 //
 
-IKeyState::IKeyState(IEventQueue*  /*events*/)
-{
+IKeyState::IKeyState (IEventQueue* /*events*/) {
 }
 
 //
@@ -35,62 +34,57 @@ IKeyState::IKeyState(IEventQueue*  /*events*/)
 //
 
 IKeyState::KeyInfo*
-IKeyState::KeyInfo::alloc(KeyID id,
-                KeyModifierMask mask, KeyButton button, SInt32 count)
-{
-    auto* info           = static_cast<KeyInfo*>(malloc(sizeof(KeyInfo)));
-    info->m_key              = id;
-    info->m_mask             = mask;
-    info->m_button           = button;
-    info->m_count            = count;
-    info->m_screens          = nullptr;
+IKeyState::KeyInfo::alloc (KeyID id, KeyModifierMask mask, KeyButton button,
+                           SInt32 count) {
+    auto* info      = static_cast<KeyInfo*> (malloc (sizeof (KeyInfo)));
+    info->m_key     = id;
+    info->m_mask    = mask;
+    info->m_button  = button;
+    info->m_count   = count;
+    info->m_screens = nullptr;
     info->m_screensBuffer[0] = '\0';
     return info;
 }
 
 IKeyState::KeyInfo*
-IKeyState::KeyInfo::alloc(KeyID id,
-                KeyModifierMask mask, KeyButton button, SInt32 count,
-                const std::set<String>& destinations)
-{
-    String screens = join(destinations);
+IKeyState::KeyInfo::alloc (KeyID id, KeyModifierMask mask, KeyButton button,
+                           SInt32 count, const std::set<String>& destinations) {
+    String screens = join (destinations);
 
     // build structure
-    auto* info  = static_cast<KeyInfo*>(malloc(sizeof(KeyInfo) + screens.size()));
+    auto* info =
+        static_cast<KeyInfo*> (malloc (sizeof (KeyInfo) + screens.size ()));
     info->m_key     = id;
     info->m_mask    = mask;
     info->m_button  = button;
     info->m_count   = count;
     info->m_screens = info->m_screensBuffer;
-    strcpy(info->m_screensBuffer, screens.c_str());
+    strcpy (info->m_screensBuffer, screens.c_str ());
     return info;
 }
 
 IKeyState::KeyInfo*
-IKeyState::KeyInfo::alloc(const KeyInfo& x)
-{
-    auto* info  = static_cast<KeyInfo*>(malloc(sizeof(KeyInfo) +
-                                        strlen(x.m_screensBuffer)));
+IKeyState::KeyInfo::alloc (const KeyInfo& x) {
+    auto* info = static_cast<KeyInfo*> (
+        malloc (sizeof (KeyInfo) + strlen (x.m_screensBuffer)));
     info->m_key     = x.m_key;
     info->m_mask    = x.m_mask;
     info->m_button  = x.m_button;
     info->m_count   = x.m_count;
     info->m_screens = x.m_screens != nullptr ? info->m_screensBuffer : nullptr;
-    strcpy(info->m_screensBuffer, x.m_screensBuffer);
+    strcpy (info->m_screensBuffer, x.m_screensBuffer);
     return info;
 }
 
 bool
-IKeyState::KeyInfo::isDefault(const char* screens)
-{
+IKeyState::KeyInfo::isDefault (const char* screens) {
     return (screens == nullptr || screens[0] == '\0');
 }
 
 bool
-IKeyState::KeyInfo::contains(const char* screens, const String& name)
-{
+IKeyState::KeyInfo::contains (const char* screens, const String& name) {
     // special cases
-    if (isDefault(screens)) {
+    if (isDefault (screens)) {
         return false;
     }
     if (screens[0] == '*') {
@@ -99,62 +93,56 @@ IKeyState::KeyInfo::contains(const char* screens, const String& name)
 
     // search
     String match;
-    match.reserve(name.size() + 2);
+    match.reserve (name.size () + 2);
     match += ":";
     match += name;
     match += ":";
-    return (strstr(screens, match.c_str()) != nullptr);
+    return (strstr (screens, match.c_str ()) != nullptr);
 }
 
 bool
-IKeyState::KeyInfo::equal(const KeyInfo* a, const KeyInfo* b)
-{
-    return (a->m_key    == b->m_key &&
-            a->m_mask   == b->m_mask &&
-            a->m_button == b->m_button &&
-            a->m_count  == b->m_count &&
-            strcmp(a->m_screensBuffer, b->m_screensBuffer) == 0);
+IKeyState::KeyInfo::equal (const KeyInfo* a, const KeyInfo* b) {
+    return (a->m_key == b->m_key && a->m_mask == b->m_mask &&
+            a->m_button == b->m_button && a->m_count == b->m_count &&
+            strcmp (a->m_screensBuffer, b->m_screensBuffer) == 0);
 }
 
 String
-IKeyState::KeyInfo::join(const std::set<String>& destinations)
-{
+IKeyState::KeyInfo::join (const std::set<String>& destinations) {
     // collect destinations into a string.  names are surrounded by ':'
     // which makes searching easy.  the string is empty if there are no
     // destinations and "*" means all destinations.
     String screens;
-    for (const auto & destination : destinations) {
+    for (const auto& destination : destinations) {
         if (destination == "*") {
             screens = "*";
             break;
         }
-        
-            if (screens.empty()) {
-                screens = ":";
-            }
-            screens += destination;
-            screens += ":";
-        
+
+        if (screens.empty ()) {
+            screens = ":";
+        }
+        screens += destination;
+        screens += ":";
     }
     return screens;
 }
 
 void
-IKeyState::KeyInfo::split(const char* screens, std::set<String>& dst)
-{
-    dst.clear();
-    if (isDefault(screens)) {
+IKeyState::KeyInfo::split (const char* screens, std::set<String>& dst) {
+    dst.clear ();
+    if (isDefault (screens)) {
         return;
     }
     if (screens[0] == '*') {
-        dst.insert("*");
+        dst.insert ("*");
         return;
     }
 
     const char* i = screens + 1;
     while (*i != '\0') {
-        const char* j = strchr(i, ':');
-        dst.insert(String(i, j - i));
+        const char* j = strchr (i, ':');
+        dst.insert (String (i, j - i));
         i = j + 1;
     }
 }

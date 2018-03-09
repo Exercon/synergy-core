@@ -21,46 +21,47 @@
 
 #include "test/global/gtest.h"
 
-using ::testing::_;
 using ::testing::Invoke;
 using ::testing::NiceMock;
+using ::testing::_;
 
 bool
-server_stubParseGenericArgs(int /*unused*/, const char* const* /*unused*/, int& /*unused*/)
-{
+server_stubParseGenericArgs (int /*unused*/, const char* const* /*unused*/,
+                             int& /*unused*/) {
     return false;
 }
 
 bool
-server_stubCheckUnexpectedArgs()
-{
+server_stubCheckUnexpectedArgs () {
     return false;
 }
 
-TEST(ServerArgsParsingTests, parseServerArgs_addressArg_setSynergyAddress)
-{
+TEST (ServerArgsParsingTests, parseServerArgs_addressArg_setSynergyAddress) {
     NiceMock<MockArgParser> argParser;
-    ON_CALL(argParser, parseGenericArgs(_, _, _)).WillByDefault(Invoke(server_stubParseGenericArgs));
-    ON_CALL(argParser, checkUnexpectedArgs()).WillByDefault(Invoke(server_stubCheckUnexpectedArgs));
+    ON_CALL (argParser, parseGenericArgs (_, _, _))
+        .WillByDefault (Invoke (server_stubParseGenericArgs));
+    ON_CALL (argParser, checkUnexpectedArgs ())
+        .WillByDefault (Invoke (server_stubCheckUnexpectedArgs));
     ServerArgs serverArgs;
-    const int argc = 3;
-    const char* kAddressCmd[argc] = { "stub", "--address", "mock_address" };
+    const int argc                = 3;
+    const char* kAddressCmd[argc] = {"stub", "--address", "mock_address"};
 
-    argParser.parseServerArgs(serverArgs, argc, kAddressCmd);
+    argParser.parseServerArgs (serverArgs, argc, kAddressCmd);
 
-    EXPECT_EQ("mock_address", serverArgs.m_synergyAddress);
+    EXPECT_EQ ("mock_address", serverArgs.m_synergyAddress);
 }
 
-TEST(ServerArgsParsingTests, parseServerArgs_configArg_setConfigFile)
-{
+TEST (ServerArgsParsingTests, parseServerArgs_configArg_setConfigFile) {
     NiceMock<MockArgParser> argParser;
-    ON_CALL(argParser, parseGenericArgs(_, _, _)).WillByDefault(Invoke(server_stubParseGenericArgs));
-    ON_CALL(argParser, checkUnexpectedArgs()).WillByDefault(Invoke(server_stubCheckUnexpectedArgs));
+    ON_CALL (argParser, parseGenericArgs (_, _, _))
+        .WillByDefault (Invoke (server_stubParseGenericArgs));
+    ON_CALL (argParser, checkUnexpectedArgs ())
+        .WillByDefault (Invoke (server_stubCheckUnexpectedArgs));
     ServerArgs serverArgs;
-    const int argc = 3;
-    const char* kConfigCmd[argc] = { "stub", "--config", "mock_configFile" };
+    const int argc               = 3;
+    const char* kConfigCmd[argc] = {"stub", "--config", "mock_configFile"};
 
-    argParser.parseServerArgs(serverArgs, argc, kConfigCmd);
+    argParser.parseServerArgs (serverArgs, argc, kConfigCmd);
 
-    EXPECT_EQ("mock_configFile", serverArgs.m_configFile);
+    EXPECT_EQ ("mock_configFile", serverArgs.m_configFile);
 }
